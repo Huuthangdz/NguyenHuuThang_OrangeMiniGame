@@ -108,12 +108,12 @@ TextureImporter:
       name: orange 4_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 4
-        width: 110
-        height: 111
+        x: 5
+        y: 5
+        width: 109
+        height: 110
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

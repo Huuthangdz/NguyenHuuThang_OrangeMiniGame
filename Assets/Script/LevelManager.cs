@@ -21,11 +21,20 @@ public class LevelManager : MonoBehaviour
     public void NextLevel()
     {
         Time.timeScale = 1f;
-       
         int nextLevel = playGameManager.level;
         PlayerPrefs.SetInt("SelectedLevelRecent", nextLevel);
         PlayerPrefs.Save();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void UnPauseGame()
+    {
+        Time.timeScale = 1f;
     }
 }
