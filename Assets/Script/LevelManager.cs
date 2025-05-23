@@ -21,6 +21,11 @@ public class LevelManager : MonoBehaviour
     public void NextLevel()
     {
         Time.timeScale = 1f;
-        playGameManager.StartLevel(playGameManager.level + 1);
+       
+        int nextLevel = playGameManager.level;
+        PlayerPrefs.SetInt("SelectedLevelRecent", nextLevel);
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

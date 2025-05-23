@@ -11,6 +11,7 @@ public class PlayGameManager : MonoBehaviour
     private Vector2 _endPos;
     private float TimeRemaining;
     private bool _isGameActive = false;
+    private bool _hasWon = false;   
 
     [SerializeField] private GridManager gridManager;
     [SerializeField] private TextMeshProUGUI TimeRemainText;
@@ -28,17 +29,18 @@ public class PlayGameManager : MonoBehaviour
             if (gridManager == null)
             {
                 Debug.LogError("GridManager not found");
-
             }
         }
+        level = PlayerPrefs.GetInt("SelectedLevelRecent", 1);
         StartLevel(level);
     }
     void Update()
     {
         SwipePieceImage();
         TimerCoundown();
-        if (gridManager.CheckWin())
+        if (!_hasWon && gridManager.CheckWin())
         {
+            _hasWon = true;
             Invoke("WinLevel", 1f);
         }
     }
@@ -67,29 +69,29 @@ public class PlayGameManager : MonoBehaviour
     public void WinLevel()
     {
         _isGameActive = false;
-        level += 1;
-        SaveRecord(true, level, TimeRemaining);
-
+        //SaveRecord(true, level, TimeRemaining);
         WinPanel.SetActive(true);
+        level = level + 1;
+        PlayerPrefs.SetInt("LevelMax", level);
         Time.timeScale = 0f;
     }
 
     public void GameOver()
     {
-        SaveRecord(false, level, 0f);
+        //SaveRecord(false, level, 0f);
         Time.timeScale = 0f;
     }
 
-    void SaveRecord(bool won, int level, float timeLeft)
-    {
-        string key = "Level" + level + "_Result";
-        PlayerPrefs.SetString(key, won ? "Win" : "Lose");
+    //void SaveRecord(bool won, int level, float timeLeft)
+    //{
+    //    string key = "Level" + level + "_Result";
+    //    PlayerPrefs.SetString(key, won ? "Win" : "Lose");
 
-        if (won)
-            PlayerPrefs.SetFloat("Level" + level + "_TimeLeft", timeLeft);
+    //    if (won)
+    //        PlayerPrefs.SetFloat("Level" + level + "_TimeLeft", timeLeft);
 
-        PlayerPrefs.Save();
-    }
+    //    PlayerPrefs.Save();
+    //}
 
     private void SwipePieceImage()
     {
