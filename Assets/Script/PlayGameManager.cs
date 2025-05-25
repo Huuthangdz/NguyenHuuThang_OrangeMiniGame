@@ -16,8 +16,7 @@ public class PlayGameManager : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private TextMeshProUGUI TimeRemainText;
     [SerializeField] private float baseTime = 60f;
-    [SerializeField] private GameObject WinPanel;
-    [SerializeField] private GameObject LosePanel;
+    [SerializeField] private LevelManager levelManager;
 
     // Update is called once per frame
 
@@ -41,7 +40,7 @@ public class PlayGameManager : MonoBehaviour
         if (!_hasWon && gridManager.CheckWin())
         {
             _hasWon = true;
-            Invoke("WinLevel", 1f);
+            StartCoroutine(WinLevel());
         }
     }
 
@@ -61,24 +60,26 @@ public class PlayGameManager : MonoBehaviour
         if (TimeRemaining <= 0)
         {
             _isGameActive = false;
-            LosePanel.SetActive(true);
-            GameOver();
+            StartCoroutine(GameOver());
         }
     }
 
-    public void WinLevel()
+    public IEnumerator WinLevel()
     {
+        yield return new WaitForSeconds(1f);
         _isGameActive = false;
-        //SaveRecord(true, level, TimeRemaining);
-        WinPanel.SetActive(true);
         level = level + 1;
         PlayerPrefs.SetInt("LevelMax", level);
+        levelManager.WinLevelGame();
+        yield return new WaitForSeconds(1f);
         Time.timeScale = 0f;
     }
 
-    public void GameOver()
+    public IEnumerator GameOver()
     {
         //SaveRecord(false, level, 0f);
+        levelManager.LoseLevelGame();
+        yield return new WaitForSeconds(1f);
         Time.timeScale = 0f;
     }
 
